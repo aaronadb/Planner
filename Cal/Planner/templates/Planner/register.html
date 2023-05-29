@@ -1,0 +1,14 @@
+{% extends "Planner/layout.html" %}
+
+{% block title %}
+Login
+{% endblock %}
+
+{% block body %}
+<form action="{% url 'register' %}" method="post">
+    {% csrf_token %}
+    <input type="text" name="username" placeholder="Username">
+    <input type="password" name="password" placeholder="Password">
+    <input type="submit" value="Submit">
+</form>
+{% endblock %}

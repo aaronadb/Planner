@@ -9,6 +9,10 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
+#Login URL
+LOGIN_URL="login"
+
+AUTH_USER_MODEL="Planner.User"
 
 from pathlib import Path
 

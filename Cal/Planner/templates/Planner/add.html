@@ -1,0 +1,13 @@
+{% extends "Planner/layout.html" %}
+
+{% block title %}
+Add
+{% endblock %}
+
+{% block body %}
+<form action="{% url 'add' %}" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit">
+</form>
+{% endblock %}
