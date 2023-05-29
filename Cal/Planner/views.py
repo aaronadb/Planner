@@ -3,4 +3,4 @@ from django.shortcuts import render
 # Create your views here.
 
 def index(request):
-    render(request, "Planner/index.html")
+    return render(request, "Planner/index.html")
