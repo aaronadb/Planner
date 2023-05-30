@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from .forms import NewItemForm, NewUserForm
+from .forms import NewItemForm
 from .models import User
 # Create your views here.
 
@@ -16,7 +16,9 @@ def add(request):
     if request.method=="POST":
         item=NewItemForm(request.POST)
         if item.is_valid():
-            item.save
+            item=item.save(commit=False)
+            item.user_id=request.user
+            item.save()
     return render(request, "Planner/add.html", {"form":NewItemForm()})
 
 def login_view(request):
@@ -27,11 +29,10 @@ def login_view(request):
             return HttpResponseRedirect(reverse("index"))
         else:
             return render(request, "Planner/login.html", {
-                "form":NewUserForm(),
                 "message":"Invalid Credentials"
             })
     else:
-        return render(request, "Planner/login.html", {"form":NewUserForm()})
+        return render(request, "Planner/login.html")
 
 def logout_view(request):
     logout(request)

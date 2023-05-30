@@ -5,5 +5,16 @@ Index Route
 {% endblock %}
 
 {% block body %}
-<h1>Display Calendar</h1>
+<div>
+    {% if user.is_authenticated %}
+    <a href="{% url 'logout' %}">Logout</a>
+    {% else %}
+    <a href="{% url 'login' %}">Login</a>
+    <a href="{% url 'register' %}">Register</a>
+    {% endif %}
+</div>
+
+<div>
+    <h1>Display Calendar</h1>
+</div>
 {% endblock %}

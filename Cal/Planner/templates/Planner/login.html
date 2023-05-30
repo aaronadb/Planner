@@ -5,10 +5,15 @@ Login
 {% endblock %}
 
 {% block body %}
-<form action="{% url 'login' %}" method="POST">
-    {% csrf_token %}
-    <input type="text" name="username" placeholder="Username">
-    <input type="password" name="password" placeholder="Password">
-    <input type="submit" value="Submit">
-</form>
+<div>
+    <form action="{% url 'login' %}" method="POST">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Username">
+        <input type="password" name="password" placeholder="Password">
+        <input type="submit" value="Submit">
+    </form>
+</div>
+<div>
+    <h3>Don't have an account <a href="{% url 'register' %}">Signup</a></h3>
+</div>
 {% endblock %}
