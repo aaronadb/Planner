@@ -5,11 +5,15 @@ from django.db import IntegrityError
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from .forms import NewItemForm
-from .models import User
+from .models import User, Item
 # Create your views here.
 
 def index(request):
-    return render(request, "Planner/index.html")
+    user_id=request.user.id
+    events=[]
+    if user_id is not None:
+        events=Item.objects.filter(user_id=user_id)
+    return render(request, "Planner/index.html", {"Events":events})
 
 @login_required
 def add(request):

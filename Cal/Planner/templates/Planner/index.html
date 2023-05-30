@@ -16,5 +16,15 @@ Index Route
 
 <div>
     <h1>Display Calendar</h1>
+    {% for event in Events %}
+        <li>
+            Name: {{event.name}}
+            Early Start Time: {{event.early_start_time}}
+            Late Start Time: {{event.late_start_time}}
+            Duration: {{event.duration}}
+            Priority: {{event.priority}}
+            Assigned: {{event.assigned}}
+        </li>
+    {% endfor %}
 </div>
 {% endblock %}
