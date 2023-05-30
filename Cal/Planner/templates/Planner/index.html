@@ -8,6 +8,8 @@ Index Route
 <div>
     {% if user.is_authenticated %}
     <a href="{% url 'logout' %}">Logout</a>
+    <a href="{% url 'add' %}">Add Event</a>
+    <a href="{% url 'assign' %}">Assign Event</a>
     {% else %}
     <a href="{% url 'login' %}">Login</a>
     <a href="{% url 'register' %}">Register</a>
@@ -15,16 +17,16 @@ Index Route
 </div>
 
 <div>
-    <h1>Display Calendar</h1>
+    <h1>Events</h1>
     {% for event in Events %}
-        <li>
-            Name: {{event.name}}
-            Early Start Time: {{event.early_start_time}}
-            Late Start Time: {{event.late_start_time}}
-            Duration: {{event.duration}}
-            Priority: {{event.priority}}
-            Assigned: {{event.assigned}}
-        </li>
+        <div>
+            <p>Name: {{event.name}}</p>
+            <p>Early Start Time: {{event.early_start_time}}</p>
+            <p>Start Time: {{event.late_start_time}}</p>
+            <p>Duration: {{event.duration}}</p>
+            <p>Priority: {{event.priority}}</p>
+            <p>Assigned: {{event.assigned}}</p>
+        </div>
     {% endfor %}
 </div>
 {% endblock %}

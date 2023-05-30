@@ -6,6 +6,8 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from .forms import NewItemForm
 from .models import User, Item
+from ics import Calendar
+from .utils import addEvent, assignEvent, icaltojson
 # Create your views here.
 
 def index(request):
@@ -57,3 +59,21 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "Planner/register.html")
+    
+@login_required
+def assign(request):
+    cal=Calendar()
+    events=[]
+    items=Item.objects.filter(user_id=request.user.id, assigned=False).order_by("-priority","duration")
+    for item in items:
+        s_t=assignEvent(events, item)
+        print(s_t)
+        if s_t is not None:
+            cal=addEvent(cal,item,s_t)
+            item.assigned=True
+            item.early_start_time=s_t.datetime
+            item.late_start_time=s_t.datetime
+            print(item)
+            item.save()
+            events=list(cal.events)
+    return HttpResponseRedirect(reverse("index"))
