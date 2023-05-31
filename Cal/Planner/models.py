@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser
 # Create your models here.
 
 class User(AbstractUser):
-    pass
+    cal=models.FileField(upload_to="uploads/", null=True, blank=True)
 
 class Item(models.Model):
     class Priority(models.TextChoices):

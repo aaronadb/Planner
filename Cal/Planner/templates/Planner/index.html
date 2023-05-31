@@ -10,6 +10,7 @@ Index Route
     <a href="{% url 'logout' %}">Logout</a>
     <a href="{% url 'add' %}">Add Event</a>
     <a href="{% url 'assign' %}">Assign Event</a>
+    <a href="{% url 'upload' %}">Upload Calendar</a>
     {% else %}
     <a href="{% url 'login' %}">Login</a>
     <a href="{% url 'register' %}">Register</a>
@@ -26,6 +27,17 @@ Index Route
             <p>Duration: {{event.duration}}</p>
             <p>Priority: {{event.priority}}</p>
             <p>Assigned: {{event.assigned}}</p>
+        </div>
+    {% endfor %}
+</div>
+
+<div>
+    <h1>Events in Uploaded Calendar</h1>
+    {% for event in Cal %}
+        <div>
+            <p>Name: {{event.name}}</p>
+            <p>Start Time: {{event.begin}}</p>
+            <p>End Time: {{event.end}}</p>
         </div>
     {% endfor %}
 </div>

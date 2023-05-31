@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from .forms import NewItemForm
+from .forms import NewItemForm, UploadCalendarForm
 from .models import User, Item
 from ics import Calendar
 from .utils import addEvent, assignEvent, icaltojson
@@ -12,10 +12,13 @@ from .utils import addEvent, assignEvent, icaltojson
 
 def index(request):
     user_id=request.user.id
+    more_events=[]
     events=[]
     if user_id is not None:
         events=Item.objects.filter(user_id=user_id)
-    return render(request, "Planner/index.html", {"Events":events})
+        if request.user.cal!="":
+            more_events=icaltojson(request.user.cal.path)
+    return render(request, "Planner/index.html", {"Events":events, "Cal":more_events})
 
 @login_required
 def add(request):
@@ -64,16 +67,27 @@ def register(request):
 def assign(request):
     cal=Calendar()
     events=[]
+    if request.user.cal!="":
+        events=icaltojson(request.user.cal.path)
     items=Item.objects.filter(user_id=request.user.id, assigned=False).order_by("-priority","duration")
     for item in items:
         s_t=assignEvent(events, item)
-        print(s_t)
         if s_t is not None:
             cal=addEvent(cal,item,s_t)
             item.assigned=True
             item.early_start_time=s_t.datetime
             item.late_start_time=s_t.datetime
-            print(item)
             item.save()
             events=list(cal.events)
     return HttpResponseRedirect(reverse("index"))
+
+@login_required
+def upload(request):
+    if request.method=="POST":
+        user=request.user
+        upload=UploadCalendarForm(request.POST, request.FILES)
+        if upload.is_valid:
+            user.cal=request.FILES["cal"]
+            user.save()
+            return HttpResponseRedirect(reverse("index"))
+    return render(request, "Planner/upload.html", {"form":UploadCalendarForm()})
