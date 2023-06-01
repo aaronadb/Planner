@@ -8,12 +8,14 @@ Login
 <div>
     <form action="{% url 'register' %}" method="post">
         {% csrf_token %}
-        <input type="text" name="username" placeholder="Username">
-        <input type="password" name="password" placeholder="Password">
+        <p><label for="username">Username:</label>
+        <input type="text" name="username" placeholder="Username"></p>
+        <p><label for="password">Password:</label>
+        <input type="password" name="password" placeholder="Password"></p>
         <input type="submit" value="Submit">
     </form>
 </div>
 <div>
-    <h3>Already have an account <a href="{% url 'login' %}">Login</a></h3>
+    <h3>Already have an account? <a class="link" href="{% url 'login' %}">Login</a></h3>
 </div>
 {% endblock %}

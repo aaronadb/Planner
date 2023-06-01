@@ -1,0 +1,45 @@
+
+
+#nav-bar {
+    background-color: white;
+    padding: 20px;
+}
+
+.link {
+    color: blue;
+    padding: 10px;
+}
+
+.site-title {
+    color: black;
+    padding: 20px;
+}
+
+.event {
+    border-color: black;
+    border-bottom: solid;
+}
+
+h1 {
+    padding: 20px;
+}
+
+h2 {
+    color: crimson;
+    padding-bottom: 10px;
+}
+
+div {
+    padding: 10px;
+}
+
+form {
+    background-color: white;
+    color: black;
+    align-content: normal;
+    display: block;
+}
+
+input, label {
+    display: block;
+}

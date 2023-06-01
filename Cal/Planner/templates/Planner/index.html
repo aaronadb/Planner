@@ -6,26 +6,26 @@ Index Route
 
 {% block body %}
 <div>
-    <h1>Events</h1>
+    <h2>Events</h2>
     {% for event in Events %}
-        <div>
-            <p>Name: {{event.name}}</p>
-            <p>Early Start Time: {{event.early_start_time}}</p>
-            <p>Start Time: {{event.late_start_time}}</p>
-            <p>Duration: {{event.duration}}</p>
-            <p>Priority: {{event.priority}}</p>
-            <p>Assigned: {{event.assigned}}</p>
+        <div class="event">
+            <p><strong>Name:</strong> {{event.name}}</p>
+            <p><strong>Early Start Time:</strong> {{event.early_start_time}}</p>
+            <p><strong>Late Start Time:</strong> {{event.late_start_time}}</p>
+            <p><strong>Duration:</strong> {{event.duration}} minutes</p>
+            <p><strong>Priority:</strong> {{event.priority}}</p>
+            <p><strong>Assigned:</strong> {{event.assigned}}</p>
         </div>
     {% endfor %}
 </div>
 
 <div>
-    <h1>Events in Uploaded Calendar</h1>
+    <h2>Events in Calendar</h2>
     {% for event in Cal %}
-        <div>
-            <p>Name: {{event.name}}</p>
-            <p>Start Time: {{event.begin}}</p>
-            <p>End Time: {{event.end}}</p>
+        <div class="event">
+            <p><strong>Name:</strong> {{event.name}}</p>
+            <p><strong>Start Time:</strong> {{event.begin}}</p>
+            <p><strong>End Time:</strong> {{event.end}}</p>
         </div>
     {% endfor %}
 </div>

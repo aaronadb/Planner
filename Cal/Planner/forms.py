@@ -8,8 +8,8 @@ class DateInput(forms.DateInput):
     input_type = 'date'
 
 class NewItemForm(forms.ModelForm):
-    early_start_time=forms.SplitDateTimeField(widget=widgets.AdminSplitDateTime())
-    late_start_time=forms.SplitDateTimeField(widget=widgets.AdminSplitDateTime())
+    early_start_time=forms.SplitDateTimeField(widget=forms.SplitDateTimeWidget(date_attrs={"placeholder":"yyyy-mm-dd"}, time_attrs={"placeholder":"hh:mm:ss"}))
+    late_start_time=forms.SplitDateTimeField(widget=forms.SplitDateTimeWidget(date_attrs={"placeholder":"yyyy-mm-dd"}, time_attrs={"placeholder":"hh:mm:ss"}))
     #late_start_time=forms.DateTimeField(widget=forms.SplitDateTimeWidget(date_attrs={"placeholder":"yyyy-mm-dd"},time_attrs={"placeholder":"hh:mm:ss"}))
     class Meta:
         model=Item
