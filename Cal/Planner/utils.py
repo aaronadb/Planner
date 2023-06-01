@@ -5,7 +5,7 @@ def icaltojson(filename):
     file=open(filename)
     cal=Calendar(file.read())
     events=list(cal.events)
-    return events
+    return events, cal
 
 def assignEvent(events, event, grace=0):
     e_s=arrow.get(event.early_start_time)
