@@ -10,7 +10,7 @@ class DateInput(forms.DateInput):
 class NewItemForm(forms.ModelForm):
     early_start_time=forms.SplitDateTimeField(widget=forms.SplitDateTimeWidget(date_attrs={"placeholder":"yyyy-mm-dd"}, time_attrs={"placeholder":"hh:mm:ss"}))
     late_start_time=forms.SplitDateTimeField(widget=forms.SplitDateTimeWidget(date_attrs={"placeholder":"yyyy-mm-dd"}, time_attrs={"placeholder":"hh:mm:ss"}))
-    #late_start_time=forms.DateTimeField(widget=forms.SplitDateTimeWidget(date_attrs={"placeholder":"yyyy-mm-dd"},time_attrs={"placeholder":"hh:mm:ss"}))
+    name=forms.TimeField(widget=forms.TextInput(attrs={"autofocus":True}))
     class Meta:
         model=Item
         fields=["name", "early_start_time", "late_start_time", "duration", "priority"]

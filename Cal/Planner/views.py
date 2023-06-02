@@ -14,8 +14,8 @@ import mimetypes
 
 def index(request):
     user_id=request.user.id
-    more_events=[]
-    events=[]
+    more_events=None
+    events=None
     if user_id is not None:
         events=Item.objects.filter(user_id=user_id)
         if request.user.cal!="":

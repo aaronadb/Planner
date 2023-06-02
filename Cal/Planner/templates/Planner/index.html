@@ -1,12 +1,18 @@
 {% extends "Planner/layout.html" %}
+{% load static %}
 
 {% block title %}
 Index Route
 {% endblock %}
 
 {% block body %}
-<div>
+<button id="E">Display Events</button>
+<button id="C">Display Calendar</button>
+<div id="Events">
     <h2>Events</h2>
+    {% if Events is None %}
+        <h3>No Events</h3>
+    {% endif %}
     {% for event in Events %}
         <div class="event">
             <p><strong>Name:</strong> {{event.name}}</p>
@@ -19,8 +25,11 @@ Index Route
     {% endfor %}
 </div>
 
-<div>
+<div id="Calendar">
     <h2>Events in Calendar</h2>
+    {% if Cal is None %}
+        <h3>No Events in Calendar</h3>
+    {% endif %}
     {% for event in Cal %}
         <div class="event">
             <p><strong>Name:</strong> {{event.name}}</p>
@@ -29,4 +38,8 @@ Index Route
         </div>
     {% endfor %}
 </div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'Planner/index.js' %}"></script>
 {% endblock %}
