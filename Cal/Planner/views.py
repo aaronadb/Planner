@@ -17,10 +17,8 @@ def index(request):
     user_id=request.user.id
     more_events=None
     events=None
-    unassigned=None
     if user_id is not None:
         events=Item.objects.filter(user_id=user_id, assigned=False)
-        unassigned=Item.objects.filter(user_id=user_id, assigned=False)
         if request.user.cal!="":
             more_events,_=icaltojson(request.user.cal.path)
     return render(request, "Planner/index.html", {"Events":events, "Cal":more_events})
@@ -33,6 +31,8 @@ def add(request):
             item=item.save(commit=False)
             item.user_id=request.user
             item.save()
+        else:
+            return render(request, "Planner/add.html", {"form":item, "message":item.errors})
     return render(request, "Planner/add.html", {"form":NewItemForm()})
 
 def login_view(request):
@@ -76,7 +76,6 @@ def register(request):
     
 @login_required
 def assign(request):
-    #return render(request, "Planner/assign.html")
     unassigned=[]
     cal=Calendar()
     new_cal=Calendar()
@@ -106,9 +105,7 @@ def assign(request):
     with open(filename, 'w') as f:
         f.writelines(new_cal.serialize_iter())
     message=str(len(items)-len(unassigned))+" Events assigned successfully\n" + str(len(unassigned)) +" Events assigned unsuccessfully"
-    print(message)
     return render(request, "Planner/assign.html", {"message":message})
-    return HttpResponseRedirect(reverse("index"), {"message":message})
 
 @login_required
 def download(request):

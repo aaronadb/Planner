@@ -5,6 +5,10 @@ Add
 {% endblock %}
 
 {% block body %}
+{% if message is not None %}
+<h2>There are some errors in the form</h2>
+<h4>{{message}}</h4>
+{% endif %}
 <form action="{% url 'add' %}" method="post">
     {% csrf_token %}
     {{ form.as_p }}
