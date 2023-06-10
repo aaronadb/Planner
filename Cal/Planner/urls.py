@@ -1,4 +1,5 @@
 from django.urls import path
+from django.conf.urls import url
 from . import views
 
 urlpatterns = [
@@ -7,7 +8,7 @@ urlpatterns = [
     path("login", views.login_view, name="login"),
     path("logout", views.logout_view, name="logout"),
     path("register", views.register, name="register"),
-    path("assign", views.assign, name="assign"),
+    url(r'^assign$', views.assign, name="assign"),
     path("upload", views.upload, name="upload"),
     path("download", views.download, name="download")
 ]

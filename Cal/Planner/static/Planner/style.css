@@ -18,6 +18,9 @@
     border-bottom: solid;
 }
 
+.alert {
+    color: red;
+}
 
 h1 {
     padding: 20px;

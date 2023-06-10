@@ -1,21 +1,35 @@
 {% extends "Planner/layout.html" %}
+{% load static %}
 
 {% block title %}
-Login
+Register
 {% endblock %}
 
 {% block body %}
+{% if message != None %}
+    <div>
+        <h3 class="alert" id="register-alert">{{message}}</h3>
+    </div>
+{% endif %}
 <div>
     <form action="{% url 'register' %}" method="post">
         {% csrf_token %}
         <p><label for="username">Username:</label>
         <input autofocus type="text" name="username" placeholder="Username"></p>
+        <p><label for="emial">Email:</label>
+        <input type="email" name="email" placeholder="Email"></p>
         <p><label for="password">Password:</label>
         <input type="password" name="password" placeholder="Password"></p>
+        <p><label for="confirm-password">Confirm Password:</label>
+        <input type="password" name="confirm-password" placeholder="Confirm Password"></p>
         <input type="submit" value="Submit">
     </form>
 </div>
 <div>
     <h3>Already have an account? <a class="link" href="{% url 'login' %}">Login</a></h3>
 </div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'Planner/register.js' %}"></script>
 {% endblock %}

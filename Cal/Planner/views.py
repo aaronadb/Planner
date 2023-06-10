@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.http.response import HttpResponse
 from django.urls import reverse
 from .forms import NewItemForm, UploadCalendarForm
@@ -10,14 +10,17 @@ from .models import User, Item
 from ics import Calendar
 from .utils import addEvent, assignEvent, icaltojson
 import mimetypes
+from django.core.files import File
 # Create your views here.
 
 def index(request):
     user_id=request.user.id
     more_events=None
     events=None
+    unassigned=None
     if user_id is not None:
-        events=Item.objects.filter(user_id=user_id)
+        events=Item.objects.filter(user_id=user_id, assigned=False)
+        unassigned=Item.objects.filter(user_id=user_id, assigned=False)
         if request.user.cal!="":
             more_events,_=icaltojson(request.user.cal.path)
     return render(request, "Planner/index.html", {"Events":events, "Cal":more_events})
@@ -52,9 +55,15 @@ def logout_view(request):
 def register(request):
     if request.method=="POST":
         username=request.POST["username"]
+        email=request.POST["email"]
         password=request.POST["password"]
+        confirm_password=request.POST["confirm-password"]
+        if password!=confirm_password:
+            return render(request, "Planner/register.html", {
+                "message":"Password and Confirm Password do not match"
+            })
         try:
-            user=User.objects.create_user(username, username, password)
+            user=User.objects.create_user(username, email, password)
             user.save()
         except IntegrityError:
             return render(request, "Planner/register.html", {
@@ -67,6 +76,8 @@ def register(request):
     
 @login_required
 def assign(request):
+    #return render(request, "Planner/assign.html")
+    unassigned=[]
     cal=Calendar()
     new_cal=Calendar()
     events=[]
@@ -83,10 +94,21 @@ def assign(request):
             item.late_start_time=s_t.datetime
             item.save()
             events=list(cal.events)
+        else:
+            unassigned.append(item.name)
+    user=request.user
+    filename="temp.ics"
+    with open(filename, 'w') as f:
+        f.writelines(cal.serialize_iter())
+    user.cal=File(open(filename, 'rb'), name=str(user.id)+".ics")
+    user.save()
     filename=str(request.user.id)+".ics"
     with open(filename, 'w') as f:
         f.writelines(new_cal.serialize_iter())
-    return render(request, "Planner/download.html")
+    message=str(len(items)-len(unassigned))+" Events assigned successfully\n" + str(len(unassigned)) +" Events assigned unsuccessfully"
+    print(message)
+    return render(request, "Planner/assign.html", {"message":message})
+    return HttpResponseRedirect(reverse("index"), {"message":message})
 
 @login_required
 def download(request):

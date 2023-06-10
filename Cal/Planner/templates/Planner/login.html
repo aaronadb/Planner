@@ -1,10 +1,16 @@
 {% extends "Planner/layout.html" %}
+{% load static %}
 
 {% block title %}
 Login
 {% endblock %}
 
 {% block body %}
+{% if message != None %}
+    <div>
+        <h3 class="alert" id="login-alert">{{message}}</h3>
+    </div>
+{% endif %}
 <div id="login">
     <form action="{% url 'login' %}" method="POST">
         {% csrf_token %}
@@ -18,4 +24,8 @@ Login
 <div>
     <h3>Don't have an account? <a class="link" href="{% url 'register' %}">Signup</a></h3>
 </div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'Planner/login.js' %}"></script>
 {% endblock %}

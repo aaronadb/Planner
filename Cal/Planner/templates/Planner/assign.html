@@ -1,9 +1,10 @@
 {% extends "Planner/layout.html" %}
 
 {% block title %}
-Download Route
+Assign
 {% endblock %}
 
 {% block body %}
-<a class="link" id="download-link" href="{%url 'download'%}">Download .ics file</a>
+<h2>{{message}}</h2>
+A new calendar is available to download
 {% endblock %}

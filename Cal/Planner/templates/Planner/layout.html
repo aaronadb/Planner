@@ -6,15 +6,16 @@
         <link href="{% static 'Planner/style.css' %}" rel="stylesheet">
         {% block script %}
         {% endblock %}
+        <script src="{% static 'Planner/layout.js' %}"></script>
     </head>
     <body>
         <div id="nav-bar">
-            <a class="link" href="{% url 'index' %}">Show Events</a>
+            <a class="link" id="index" href="{% url 'index' %}">Show Events</a>
             {% if user.is_authenticated %}
-            <a class="link" href="{% url 'logout' %}">Logout</a>
-            <a class="link" href="{% url 'add' %}">Add Event</a>
-            <a class="link" href="{% url 'assign' %}">Assign Event</a>
-            <a class="link" href="{% url 'upload' %}">Upload Calendar</a>
+            <a class="link" id="logout" href="{% url 'logout' %}">Logout</a>
+            <a class="link" id="add" href="{% url 'add' %}">Add Event</a>
+            <a class="link" id="assign" href="{% url 'assign' %}">Assign Event</a>
+            <a class="link" id="upload" href="{% url 'upload' %}">Upload Calendar</a>
             {% else %}
             <a class="link" href="{% url 'login' %}">Login</a>
             <a class="link" href="{% url 'register' %}">Register</a>
