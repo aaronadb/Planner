@@ -1,7 +1,7 @@
 {% extends "Planner/layout.html" %}
 
 {% block title %}
-Add
+Edit
 {% endblock %}
 
 {% block body %}
@@ -9,7 +9,7 @@ Add
 <h3 class="alert">There are some errors in the form</h3>
 <h4>{{message}}</h4>
 {% endif %}
-<form action="{% url 'add' %}" method="post">
+<form action="{% url 'edit' id %}" method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="Submit">

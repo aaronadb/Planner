@@ -16,6 +16,7 @@ Index Route
     {% endif %}
     {% for event in Events %}
         <div class="event">
+            <a class="link" id="edit-link" href="{% url 'edit' event.id %}">Edit</a>
             <p><strong>Name:</strong> {{event.name}}</p>
             <p><strong>Early Start Time:</strong> {{event.early_start_time}}</p>
             <p><strong>Late Start Time:</strong> {{event.late_start_time}}</p>

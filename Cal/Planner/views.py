@@ -11,6 +11,7 @@ from ics import Calendar
 from .utils import addEvent, assignEvent, icaltojson
 import mimetypes
 from django.core.files import File
+from datetime import datetime
 # Create your views here.
 
 def index(request):
@@ -127,3 +128,25 @@ def upload(request):
             user.save()
             return HttpResponseRedirect(reverse("index"))
     return render(request, "Planner/upload.html", {"form":UploadCalendarForm()})
+
+@login_required
+def edit(request, id):
+    event=Item.objects.filter(id=id)[0]
+    if event.user_id!=request.user:
+        return 
+    item=NewItemForm(data={"name":event.name,"early_start_time_0":event.early_start_time.date(),"early_start_time_1":event.early_start_time.time(),"late_start_time_0":event.late_start_time.date(),"late_start_time_1":event.late_start_time.time(),"duration":event.duration,"priority":event.priority})
+    if request.method=="POST":
+        item=NewItemForm(request.POST)
+        if item.is_valid():
+            item=item.save(commit=False)
+            event.name=item.name
+            event.early_start_time=item.early_start_time
+            event.late_start_time=item.late_start_time
+            event.duration=item.duration
+            event.priority=item.priority
+            event.save()
+            return HttpResponseRedirect(reverse("index"))
+        else:
+            return render(request, "Planner/edit.html", {"form":item, "id":id, "message":item.errors})
+    else:
+        return render(request, "Planner/edit.html", {"form":item, "id":id})
