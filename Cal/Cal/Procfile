@@ -1,1 +1,0 @@
-web: gunicorn Cal.wsgi --log-file -
