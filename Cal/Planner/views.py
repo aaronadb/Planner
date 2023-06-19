@@ -12,17 +12,24 @@ from .utils import addEvent, assignEvent, icaltojson
 import mimetypes
 from django.core.files import File
 from datetime import datetime
+import os.path
 # Create your views here.
 
 def index(request):
     user_id=request.user.id
     more_events=None
     events=None
+    disable_download=True
     if user_id is not None:
         events=Item.objects.filter(user_id=user_id, assigned=False)
-        if request.user.cal!="":
+        if not events.exists():
+            events=None
+        if request.user.cal:
             more_events,_=icaltojson(request.user.cal.path)
-    return render(request, "Planner/index.html", {"Events":events, "Cal":more_events})
+        filename=str(request.user.id)+".ics"
+        if os.path.exists(filename):
+            disable_download=False
+    return render(request, "Planner/index.html", {"Events":events, "Cal":more_events, "disable_download":disable_download})
 
 @login_required
 def add(request):
@@ -74,7 +81,7 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "Planner/register.html")
-    
+
 @login_required
 def assign(request):
     unassigned=[]
@@ -115,7 +122,6 @@ def download(request):
     mime_type,_=mimetypes.guess_type(filename)
     response=HttpResponse(path,content_type=mime_type)
     response['Content-Disposition']="attachment; filename=%s" % filename
-    print(response)
     return response
 
 @login_required
@@ -133,7 +139,7 @@ def upload(request):
 def edit(request, id):
     event=Item.objects.filter(id=id)[0]
     if event.user_id!=request.user:
-        return 
+        return
     item=NewItemForm(data={"name":event.name,"early_start_time_0":event.early_start_time.date(),"early_start_time_1":event.early_start_time.time(),"late_start_time_0":event.late_start_time.date(),"late_start_time_1":event.late_start_time.time(),"duration":event.duration,"priority":event.priority})
     if request.method=="POST":
         item=NewItemForm(request.POST)
