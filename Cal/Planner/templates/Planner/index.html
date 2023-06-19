@@ -42,7 +42,11 @@ Index Route
 </div>
 
 <div id="Download">
+    {% if disable_download %}
+    <h4>Download not available. No events have been assigned as yet.</h4>
+    {% else %}
     <a class="link" id="download-link" href="{%url 'download'%}">Download .ics file</a>
+    {% endif %}
 </div>
 {% endblock %}
 
